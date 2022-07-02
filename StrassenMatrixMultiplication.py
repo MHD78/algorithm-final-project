@@ -1,16 +1,26 @@
-
 import numpy as np
+
+matrix_A = []
+matrix_B = []
+
+def getMatrix(rows,name):
+    for i in range(rows):    
+        single_row = list(map(int, input().split()))  
+        name.append(single_row)
+
+print("enter matrix_A : ")
+getMatrix(4,matrix_A)
+print("enter matrix_B : ")
+getMatrix(4,matrix_B)
 
 def spliter(matrix):
     col = matrix.shape[0]//2
     row = matrix.shape[1]//2
     return matrix[:row, :col], matrix[:row, col:], matrix[row:, :col], matrix[row:, col:]
 
-
 def strassenMethod(x,y):
     if(len(x) == 1):
         return x*y
-
 
     A11,A12,A21,A22 = spliter(x)
     B11,B12,B21,B22 = spliter(y)
@@ -31,5 +41,6 @@ def strassenMethod(x,y):
     result = np.vstack((np.hstack((C11, C12)), np.hstack((C21, C22))))
     return result
 
-strassenMethod(np.matrix([[1,1,1,1],[2,2,2,2],[3,3,3,3],[2,2,2,2]]),np.matrix([[1,1,1,1],[2,2,2,2],[3,3,3,3],[2,2,2,2]]))
+
+print(f"matrix_A * matrix_B = \n{strassenMethod(np.array(matrix_A),np.array(matrix_B))}")
 
