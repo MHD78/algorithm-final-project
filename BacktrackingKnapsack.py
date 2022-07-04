@@ -3,35 +3,31 @@
 # knapsackCapacity = 10
 # weights = [2, 2, 6, 5, 4]
 # values = [6, 3, 5, 4, 6]
-# selectionList = [False for i in range(numberOfItems)]
+# itemsInit = [0 for i in range(numberOfItems)]
 
 numberOfItems = int(input("number of items : "))
 knapsackCapacity = int(input("knapsack capacity : "))
 weights = [int(input(f"weight {i} : ")) for i in range(1,numberOfItems+1) ]
 values = [int(input(f"value {i} : ")) for i in range(1,numberOfItems+1)]
-selectionList = [False for i in range(numberOfItems)]
+itemsInit = [False for i in range(numberOfItems)]
 
-currentWeight = 0
-currentValue = 0
-bestV = 0
+optP = 0
+optX=[]
 
-def backtrack(i):
-    global bestV, currentWeight, currentValue, selectionList, chosenItems
-    if i >= numberOfItems:
-        if bestV < currentValue:
-            bestV = currentValue
-            chosenItems = selectionList[:]
-    else:
-        if currentWeight + weights[i] <= knapsackCapacity:
-            selectionList[i] = True
-            currentWeight += weights[i]
-            currentValue += values[i]
-            backtrack(i + 1)
-            currentWeight -= weights[i]
-            currentValue -= values[i]
-        selectionList[i] = False
-        backtrack(i + 1)
+def backtrackKnapsack(X,l):
+	global optP	, optX
+	if l == numberOfItems:
+		if sum([X[i] * weights[i] for i in range(0,numberOfItems)]) <= knapsackCapacity:
+			currP = sum([X[i] * values[i] for i in range(0,numberOfItems)])
+			if currP >= optP :
+				optP = currP
+				optX = X[:]
+	else:
+		X[l]=1
+		backtrackKnapsack(X,l+1)
+		X[l]=0
+		backtrackKnapsack(X,l+1)
 
-backtrack(0)
-print("optimal value : ",bestV)
-print("chosen items : ",chosenItems)
+backtrackKnapsack(itemsInit,0)
+print("Optimal Value : ", optP)
+print("Selected Objects : ",optX)
